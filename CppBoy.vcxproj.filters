@@ -29,9 +29,18 @@
     <QtRcc Include="qml.qrc">
       <Filter>Resource Files</Filter>
     </QtRcc>
-    <None Include="main.qml">
+    <ClCompile Include="romstable.cpp">
       <Filter>Source Files</Filter>
-    </None>
-
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="romstable.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="romstable.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
 </Project>
