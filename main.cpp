@@ -9,7 +9,8 @@ int main(int argc, char *argv[])
 #endif
 
     QApplication app(argc, argv);
-    ROMsTable table;
+    HeaderParser headerParser;
+    ROMsTable table(headerParser);
 
     table.show();
 

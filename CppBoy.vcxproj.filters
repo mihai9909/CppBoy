@@ -32,6 +32,9 @@
     <ClCompile Include="romstable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="header_parser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="romstable.ui">
@@ -42,5 +45,13 @@
     <QtMoc Include="romstable.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="header_parser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

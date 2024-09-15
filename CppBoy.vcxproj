@@ -83,6 +83,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="header_parser.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="romstable.cpp" />
     <QtRcc Include="qml.qrc" />
@@ -92,6 +93,10 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="romstable.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="header_parser.h" />
+    <ClInclude Include="types.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
