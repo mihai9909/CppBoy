@@ -6,10 +6,11 @@ ROMsTable::ROMsTable(HeaderParser headerParser, QWidget *parent)
 	ui.setupUi(this);
 
     model = new QStandardItemModel(this);
-    model->setColumnCount(3);
+    model->setColumnCount(4);
     model->setHeaderData(0, Qt::Horizontal, tr("ROM Path"));
-    model->setHeaderData(1, Qt::Horizontal, tr("ROM Size"));
     model->setHeaderData(2, Qt::Horizontal, tr("Game Title"));
+    model->setHeaderData(3, Qt::Horizontal, tr("Publisher"));
+    model->setHeaderData(1, Qt::Horizontal, tr("ROM Size"));
 
     ui.romsTable->setModel(model);
 
@@ -44,6 +45,7 @@ void ROMsTable::on_addButton_clicked()
     newRow.append(new QStandardItem(file.fileName()));
     newRow.append(new QStandardItem(QString::number(headerParser.getSize()) + " KBs"));
     newRow.append(new QStandardItem(QString::fromStdString(headerParser.getTitle())));
+    newRow.append(new QStandardItem(QString::fromStdString(headerParser.getPublisher())));
     model->appendRow(newRow);
     // parse other ROM contents
 }
