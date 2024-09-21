@@ -1,6 +1,6 @@
 #include <QGuiApplication>
 #include <QApplication>
-#include "romstable.h"
+#include "gui/romstable.h"
 
 int main(int argc, char *argv[])
 {

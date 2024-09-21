@@ -7,7 +7,7 @@
 #include <QFileDialog>
 #include <QTextStream>
 #include <QStandardItemModel> 
-#include "header_parser.h"
+#include "../emulator/header_parser.h"
 
 class ROMsTable : public QMainWindow
 {

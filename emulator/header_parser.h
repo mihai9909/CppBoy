@@ -1,7 +1,7 @@
 #pragma once
 #include <unordered_map>
 #include <vector>
-#include "types.h"
+#include "../types.h"
 
 // Addresses of cartridge metadata inside the header
 #define HEADER_START_ADDR 0x0100

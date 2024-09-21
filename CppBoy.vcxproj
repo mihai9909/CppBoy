@@ -83,19 +83,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="header_parser.cpp" />
+    <ClCompile Include="emulator\header_parser.cpp" />
+    <ClCompile Include="gui\romstable.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="romstable.cpp" />
-    <QtRcc Include="qml.qrc" />
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="romstable.ui" />
+    <QtUic Include="gui\romstable.ui" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="romstable.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="header_parser.h" />
+    <QtMoc Include="gui\romstable.h" />
+    <ClInclude Include="emulator\header_parser.h" />
     <ClInclude Include="types.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
