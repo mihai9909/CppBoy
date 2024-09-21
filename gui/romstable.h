@@ -27,4 +27,5 @@ private:
 
 private slots:
 	void on_addButton_clicked();
+	void on_tableRow_doubleClicked(const QModelIndex& index);
 };
