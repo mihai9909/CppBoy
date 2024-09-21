@@ -84,6 +84,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="emulator\header_parser.cpp" />
+    <ClCompile Include="emulator\memory.cpp" />
     <ClCompile Include="emulator\PPU.cpp" />
     <ClCompile Include="gui\game_window.cpp" />
     <ClCompile Include="gui\romstable.cpp" />
@@ -94,6 +95,7 @@
     <QtUic Include="gui\romstable.ui" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="emulator\memory.h" />
     <ClInclude Include="utils\file_util.h" />
     <QtMoc Include="gui\romstable.h" />
     <ClInclude Include="emulator\header_parser.h" />

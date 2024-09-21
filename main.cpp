@@ -4,6 +4,7 @@
 #include <QOpenGLFunctions>
 #include "gui/romstable.h"
 #include "emulator/ppu.h"
+#include "emulator/memory.h"
 
 int main(int argc, char *argv[])
 {
@@ -13,7 +14,7 @@ int main(int argc, char *argv[])
 
     QApplication app(argc, argv);
     HeaderParser headerParser;
-    GameWindow gameWindow(new PPU);
+    GameWindow gameWindow(new PPU, new Memory);
     ROMsTable table(&headerParser, &gameWindow);
 
     table.show();

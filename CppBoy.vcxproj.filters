@@ -41,6 +41,9 @@
     <ClCompile Include="utils\file_util.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="emulator\memory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="gui\romstable.ui">
@@ -55,6 +58,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="utils\file_util.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="emulator\memory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

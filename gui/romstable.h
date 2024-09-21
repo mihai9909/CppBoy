@@ -14,7 +14,7 @@
 class ROMsTable : public QMainWindow
 {
 	Q_OBJECT
-
+		
 public:
 	ROMsTable(HeaderParser* headerParser, GameWindow* gameWindow, QWidget* parent = nullptr, QString romsDir = "/roms/");
 	~ROMsTable();

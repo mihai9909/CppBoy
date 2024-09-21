@@ -1,9 +1,10 @@
 #include "game_window.h"
 
-GameWindow::GameWindow(PPU* ppu, QWidget* parent)
+GameWindow::GameWindow(PPU* ppu, Memory* memory, QWidget* parent)
     : QMainWindow(parent)
 {
     this->ppu = ppu;
+    this->memory = memory;
     setCentralWidget(ppu);
 }
 
@@ -13,6 +14,6 @@ GameWindow::~GameWindow()
 }
 
 void GameWindow::show(QString fileName) {
-    // TODO: load ROM contents into PPU
+    memory->loadMemory(fileName);
     QMainWindow::show();
 }
