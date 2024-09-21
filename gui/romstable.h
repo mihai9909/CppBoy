@@ -9,6 +9,7 @@
 #include <QStandardItemModel> 
 #include "../emulator/header_parser.h"
 #include "game_window.h"
+#include "../utils/file_util.h"
 
 class ROMsTable : public QMainWindow
 {

@@ -63,14 +63,11 @@ void ROMsTable::on_tableRow_doubleClicked(const QModelIndex& index)
 }
 
 void ROMsTable::addTableRow(QString filePath) {
-    QFile file(filePath);
-    if (!file.open(QIODevice::ReadOnly)) {
+    QByteArray fileContent = FileUtil::readBinaryFile(filePath);
+    if (fileContent == nullptr) {
         QMessageBox::warning(this, tr("Error"), tr("Cannot open file: "));
         return;
     }
-
-    QByteArray fileContent = file.readAll();
-    file.close();
 
     headerParser->loadHeader(std::string(fileContent.constData(), fileContent.length()));
 
@@ -78,8 +75,8 @@ void ROMsTable::addTableRow(QString filePath) {
     newRow.append(new QStandardItem(QString::fromStdString(headerParser->getTitle())));
     newRow.append(new QStandardItem(QString::fromStdString(headerParser->getPublisher())));
     newRow.append(new QStandardItem(QString::number(headerParser->getSize()) + " KBs"));
-    newRow.append(new QStandardItem(QFileInfo(file).fileName()));
-    newRow.append(new QStandardItem(file.fileName()));
+    newRow.append(new QStandardItem(QFileInfo(filePath).fileName()));
+    newRow.append(new QStandardItem(filePath));
 
     for (QStandardItem* item : newRow) {
         item->setFlags(item->flags() & ~Qt::ItemIsEditable);
