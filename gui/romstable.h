@@ -14,10 +14,13 @@ class ROMsTable : public QMainWindow
 	Q_OBJECT
 
 public:
-	ROMsTable(HeaderParser headerParser, QWidget* parent = nullptr);
+	ROMsTable(HeaderParser headerParser, QWidget* parent = nullptr, QString romsDir = "/roms/");
 	~ROMsTable();
 
 private:
+	void addTableRow(QString fileName);
+	void loadROMsFromDir(QString romsPath);
+
 	Ui::ROMsTableClass ui;
 	QStandardItemModel* model;
 	HeaderParser headerParser;
