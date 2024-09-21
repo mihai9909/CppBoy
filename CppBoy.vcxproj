@@ -32,12 +32,12 @@
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
     <QtInstall>6.7.2_msvc2019_64</QtInstall>
-    <QtModules>quick;core;gui;widgets</QtModules>
+    <QtModules>quick;core;gui;widgets;openglwidgets</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
     <QtInstall>6.7.2_msvc2019_64</QtInstall>
-    <QtModules>quick;core;gui;widgets</QtModules>
+    <QtModules>quick;core;gui;widgets;openglwidgets</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
@@ -84,6 +84,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="emulator\header_parser.cpp" />
+    <ClCompile Include="emulator\PPU.cpp" />
+    <ClCompile Include="gui\game_window.cpp" />
     <ClCompile Include="gui\romstable.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -93,6 +95,8 @@
   <ItemGroup>
     <QtMoc Include="gui\romstable.h" />
     <ClInclude Include="emulator\header_parser.h" />
+    <QtMoc Include="gui\game_window.h" />
+    <QtMoc Include="emulator\PPU.h" />
     <ClInclude Include="types.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

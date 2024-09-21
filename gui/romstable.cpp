@@ -1,6 +1,6 @@
 #include "romstable.h"
 
-ROMsTable::ROMsTable(HeaderParser headerParser, QWidget *parent, QString romsDir)
+ROMsTable::ROMsTable(HeaderParser* headerParser, GameWindow* gameWindow, QWidget *parent, QString romsDir)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);
@@ -15,6 +15,7 @@ ROMsTable::ROMsTable(HeaderParser headerParser, QWidget *parent, QString romsDir
     ui.romsTable->setModel(model);
     ui.romsTable->hideColumn(4); // absolute path is used to load the File
     this->headerParser = headerParser;
+    this->gameWindow = gameWindow;
 
     connect(ui.romsTable, &QTableView::doubleClicked, this, &ROMsTable::on_tableRow_doubleClicked);
 
@@ -57,7 +58,8 @@ void ROMsTable::on_tableRow_doubleClicked(const QModelIndex& index)
 
     QString fileName = model->item(index.row(), 4)->text();
 
-    QMessageBox::information(this, "Row Double Clicked", "TODO: load file into memory and interpret instructions for file: " + fileName);
+    // TODO: load data to memory
+    gameWindow->show(fileName);
 }
 
 void ROMsTable::addTableRow(QString filePath) {
@@ -70,12 +72,12 @@ void ROMsTable::addTableRow(QString filePath) {
     QByteArray fileContent = file.readAll();
     file.close();
 
-    headerParser.loadHeader(std::string(fileContent.constData(), fileContent.length()));
+    headerParser->loadHeader(std::string(fileContent.constData(), fileContent.length()));
 
     QList<QStandardItem*> newRow;
-    newRow.append(new QStandardItem(QString::fromStdString(headerParser.getTitle())));
-    newRow.append(new QStandardItem(QString::fromStdString(headerParser.getPublisher())));
-    newRow.append(new QStandardItem(QString::number(headerParser.getSize()) + " KBs"));
+    newRow.append(new QStandardItem(QString::fromStdString(headerParser->getTitle())));
+    newRow.append(new QStandardItem(QString::fromStdString(headerParser->getPublisher())));
+    newRow.append(new QStandardItem(QString::number(headerParser->getSize()) + " KBs"));
     newRow.append(new QStandardItem(QFileInfo(file).fileName()));
     newRow.append(new QStandardItem(file.fileName()));
 
@@ -85,4 +87,3 @@ void ROMsTable::addTableRow(QString filePath) {
 
     model->appendRow(newRow);
 }
-

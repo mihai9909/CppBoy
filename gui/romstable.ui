@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
-    <height>400</height>
+    <width>605</width>
+    <height>416</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,9 +17,9 @@
    <widget class="QTableView" name="romsTable">
     <property name="geometry">
      <rect>
-      <x>15</x>
+      <x>5</x>
       <y>41</y>
-      <width>571</width>
+      <width>581</width>
       <height>301</height>
      </rect>
     </property>
@@ -43,7 +43,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>600</width>
+     <width>605</width>
      <height>22</height>
     </rect>
    </property>

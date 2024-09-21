@@ -32,6 +32,12 @@
     <ClCompile Include="emulator\header_parser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="emulator\PPU.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="gui\game_window.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="gui\romstable.ui">
@@ -48,6 +54,12 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="gui\romstable.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="gui\game_window.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="emulator\PPU.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

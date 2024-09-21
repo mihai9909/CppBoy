@@ -11,6 +11,7 @@
 #define TITLE_END_ADDR 0x0143
 #define PUBLISHER_ADDR 0x014B
 
+// Class responsible for parsing cartridge header data
 class HeaderParser {
 public:
 	HeaderParser();
