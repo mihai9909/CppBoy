@@ -58,7 +58,6 @@ void ROMsTable::on_tableRow_doubleClicked(const QModelIndex& index)
 
     QString fileName = model->item(index.row(), 4)->text();
 
-    // TODO: load data to memory
     gameWindow->show(fileName);
 }
 
