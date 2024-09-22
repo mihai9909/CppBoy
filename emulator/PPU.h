@@ -1,10 +1,10 @@
 #pragma once
 
-#include <QOpenGLWidget>
-#include <QOpenGLFunctions>
+#include <QWidget>
+#include <QPainter>
 
 // Picture Processing Unit responsible for rendering graphics inside a window
-class PPU : public QOpenGLWidget, protected QOpenGLFunctions
+class PPU : public QWidget
 {
     Q_OBJECT
 
@@ -13,6 +13,5 @@ public:
     ~PPU();
 
 protected:
-    void initializeGL() override;
-    void paintGL() override;
+    void paintEvent(QPaintEvent* event);
 };
