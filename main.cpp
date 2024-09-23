@@ -14,7 +14,9 @@ int main(int argc, char *argv[])
 
     QApplication app(argc, argv);
     HeaderParser headerParser;
-    GameWindow gameWindow(new PPU, new Memory);
+    Memory* gameboyMem = new Memory();
+    PPU* gameboyPPU = new PPU(gameboyMem);
+    GameWindow gameWindow(gameboyPPU, gameboyMem);
     ROMsTable table(&headerParser, &gameWindow);
 
     table.show();

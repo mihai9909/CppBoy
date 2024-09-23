@@ -1,6 +1,6 @@
 #include "PPU.h"
 
-PPU::PPU(QWidget* parent)
+PPU::PPU(Memory* memory, QWidget* parent) : memory(memory)
 {
 	QPalette pal = QPalette();
 
