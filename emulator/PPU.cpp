@@ -16,35 +16,28 @@ void PPU::paintEvent(QPaintEvent* event)
 {
 	Q_UNUSED(event);
 
-
-	std::vector<BYTE> tileBytes = memory->getByteSequence(0x8000, 0x10);
-	std::vector<WORD> tile = buildTile(tileBytes);
-
-	drawTile(
-		{
-			0x2FF8,
-			0x300C,
-			0x300C,
-			0x300C,
-			0x37FC,
-			0x15DC,
-			0x3778,
-			0x2FE0
-		}
-	);
+	for (int i = VRAM_START; i < 0x9900; i += 0x10) {
+		std::vector<BYTE> tileBytes = memory->getByteSequence(i, 0x10);
+		std::vector<WORD> tile = buildTile(tileBytes);
+		drawTile(tile, QPoint(((i - VRAM_START) / 0x20) % 18, ((i - VRAM_START) / 0x20) / 18));
+	}
 }
 
-void PPU::drawTile(std::vector<WORD> tile) {
+void PPU::drawTile(std::vector<WORD> tile, QPoint tileOffset) {
 	QPainter painter;
 	painter.begin(this);
 
 	std::vector<QBrush> palette = { QBrush(QColor(8,24,32)), QBrush(QColor(52,104,86)), QBrush(QColor(136,192,112)), QBrush(QColor(224,248,208)) };
+	tileOffset *= 8;
 
 	for (int i = 0; i < tile.size(); i++) {
 		for (int j = 0; j < 8; j++) {
 			int brushIndex = (tile[i] >> (2 * j)) & 0x3;
 			QBrush brush = palette[brushIndex];
-			painter.fillRect(QRect(PIXEL_SIZE * (7 - j), PIXEL_SIZE * i, PIXEL_SIZE, PIXEL_SIZE), brush);
+			QPoint pixelOffset = (QPoint((7 - j), i) + tileOffset) * PIXEL_SIZE;
+			QPoint pixelSize = (QPoint((8 - j), i+1) + tileOffset) * PIXEL_SIZE;
+
+			painter.fillRect(QRect(pixelOffset, pixelSize), brush);
 		}
 	}
 

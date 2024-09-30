@@ -13,6 +13,7 @@ GameWindow::GameWindow(PPU* ppu, Memory* memory, QWidget* parent)
 GameWindow::~GameWindow()
 {
     delete ppu;
+    delete memory;
 }
 
 void GameWindow::show(QString fileName) {
