@@ -3,7 +3,7 @@
 GameWindow::GameWindow(PPU* ppu, Memory* memory, QWidget* parent)
     : QMainWindow(parent)
 {
-    resize(WINDOW_HEIGHT_PX, WINDOW_WIDTH_PX);
+    resize(WINDOW_WIDTH_PX, WINDOW_HEIGHT_PX);
     setWindowFlags(Qt::Window | Qt::MSWindowsFixedSizeDialogHint);
     this->ppu = ppu;
     this->memory = memory;
