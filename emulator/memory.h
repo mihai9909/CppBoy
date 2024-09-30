@@ -13,6 +13,7 @@ public:
 	Memory();
 	~Memory();
 	void loadMemory(QString filePath);
+	std::vector<BYTE> getByteSequence(int offset, int length);
 
 private:
 	std::vector<BYTE> bank1;
