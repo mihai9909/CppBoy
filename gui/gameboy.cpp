@@ -1,6 +1,6 @@
-#include "game_window.h"
+#include "gameboy.h"
 
-GameWindow::GameWindow(PPU* ppu, Memory* memory, QWidget* parent)
+GameBoy::GameBoy(PPU* ppu, Memory* memory, QWidget* parent)
     : QMainWindow(parent)
 {
     resize(WINDOW_WIDTH_PX, WINDOW_HEIGHT_PX);
@@ -10,13 +10,13 @@ GameWindow::GameWindow(PPU* ppu, Memory* memory, QWidget* parent)
     setCentralWidget(ppu);
 }
 
-GameWindow::~GameWindow()
+GameBoy::~GameBoy()
 {
     delete ppu;
     delete memory;
 }
 
-void GameWindow::show(QString fileName) {
+void GameBoy::show(QString fileName) {
     memory->loadMemory(fileName);
     QMainWindow::show();
 }

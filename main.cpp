@@ -16,8 +16,8 @@ int main(int argc, char *argv[])
     HeaderParser headerParser;
     Memory* gameboyMem = new Memory();
     PPU* gameboyPPU = new PPU(gameboyMem);
-    GameWindow gameWindow(gameboyPPU, gameboyMem);
-    ROMsTable table(&headerParser, &gameWindow);
+    GameBoy gameBoy(gameboyPPU, gameboyMem);
+    ROMsTable table(&headerParser, &gameBoy);
 
     table.show();
 

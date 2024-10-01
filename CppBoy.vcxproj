@@ -86,7 +86,7 @@
     <ClCompile Include="emulator\header_parser.cpp" />
     <ClCompile Include="emulator\memory.cpp" />
     <ClCompile Include="emulator\PPU.cpp" />
-    <ClCompile Include="gui\game_window.cpp" />
+    <ClCompile Include="gui\gameboy.cpp" />
     <ClCompile Include="gui\romstable.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="utils\file_util.cpp" />
@@ -99,7 +99,7 @@
     <ClInclude Include="utils\file_util.h" />
     <QtMoc Include="gui\romstable.h" />
     <ClInclude Include="emulator\header_parser.h" />
-    <QtMoc Include="gui\game_window.h" />
+    <QtMoc Include="gui\gameboy.h" />
     <QtMoc Include="emulator\PPU.h" />
     <ClInclude Include="types.h" />
   </ItemGroup>

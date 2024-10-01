@@ -1,6 +1,6 @@
 #include "romstable.h"
 
-ROMsTable::ROMsTable(HeaderParser* headerParser, GameWindow* gameWindow, QWidget *parent, QString romsDir)
+ROMsTable::ROMsTable(HeaderParser* headerParser, GameBoy* gameWindow, QWidget *parent, QString romsDir)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);

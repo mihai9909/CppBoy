@@ -8,7 +8,7 @@
 #include <QTextStream>
 #include <QStandardItemModel> 
 #include "../emulator/header_parser.h"
-#include "game_window.h"
+#include "gameboy.h"
 #include "../utils/file_util.h"
 
 class ROMsTable : public QMainWindow
@@ -16,7 +16,7 @@ class ROMsTable : public QMainWindow
 	Q_OBJECT
 		
 public:
-	ROMsTable(HeaderParser* headerParser, GameWindow* gameWindow, QWidget* parent = nullptr, QString romsDir = "/roms/");
+	ROMsTable(HeaderParser* headerParser, GameBoy* gameWindow, QWidget* parent = nullptr, QString romsDir = "/roms/");
 	~ROMsTable();
 
 private:
@@ -26,7 +26,7 @@ private:
 	Ui::ROMsTableClass ui;
 	QStandardItemModel* model;
 	HeaderParser* headerParser;
-	GameWindow* gameWindow;
+	GameBoy* gameWindow;
 
 private slots:
 	void on_addButton_clicked();

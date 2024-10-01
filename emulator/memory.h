@@ -7,6 +7,7 @@
 #include <QByteArray>
 
 #define MEM_SIZE 65536 // in bytes
+#define LCDC 0xFF40 // LCD control register
 
 class Memory {
 public:
