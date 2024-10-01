@@ -1,12 +1,10 @@
 #include "gameboy.h"
 
 GameBoy::GameBoy(PPU* ppu, Memory* memory, QWidget* parent)
-    : QMainWindow(parent)
+    : QMainWindow(parent), ppu(ppu), memory(memory)
 {
     resize(WINDOW_WIDTH_PX, WINDOW_HEIGHT_PX);
     setWindowFlags(Qt::Window | Qt::MSWindowsFixedSizeDialogHint);
-    this->ppu = ppu;
-    this->memory = memory;
     setCentralWidget(ppu);
 }
 
