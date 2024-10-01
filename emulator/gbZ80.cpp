@@ -7,7 +7,7 @@ GBZ80::GBZ80(Memory* memory) : mem(memory)
 
 WORD GBZ80::getAF() { return regs.af; }
 
-WORD GBZ80::getA() { return HIBYTE(regs.af); }
+WORD GBZ80::getA() { return regs.a; }
 
-WORD GBZ80::getF() { return LOBYTE(regs.af); }
+WORD GBZ80::getF() { return regs.f; }
 
