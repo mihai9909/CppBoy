@@ -24,11 +24,46 @@ public:
 	WORD getF();
 
 private:
+
+    /*** Registers ***/
 	typedef struct Registers {
-		WORD af;
-		WORD bc;
-		WORD de;
-		WORD hl;
+
+        // AF
+        union {
+            struct {
+                BYTE f;
+                BYTE a;
+            };
+            WORD af;
+        };
+
+        // BC
+        union {
+            struct {
+                BYTE c;
+                BYTE b;
+            };
+            WORD bc;
+        };
+
+        // DE
+        union {
+            struct {
+                BYTE e;
+                BYTE d;
+            };
+            WORD de;
+        };
+
+        // HL
+        union {
+            struct {
+                BYTE l;
+                BYTE h;
+            };
+            WORD hl;
+        };
+
 		WORD sp; // stack pointer
 		WORD pc; // program counter
 	} Regs;
