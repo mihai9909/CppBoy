@@ -20,10 +20,13 @@ void PPU::paintEvent(QPaintEvent* event)
 }
 
 void PPU::displayTileMap() {
+	int tilesPerRow = 18;
+
 	for (int i = VRAM_START; i < VRAM_END; i += BTILE_SIZE) {
 		std::vector<BYTE> tileBytes = memory->getByteSequence(i, BTILE_SIZE);
 		std::vector<WORD> tile = buildTile(tileBytes);
-		QPoint offset = QPoint(((i - VRAM_START) / BTILE_SIZE) % 18, ((i - VRAM_START) / BTILE_SIZE) / 18) * 8;
+		int normalizedTilePos = ((i - VRAM_START) / BTILE_SIZE);
+		QPoint offset = QPoint(normalizedTilePos % tilesPerRow, normalizedTilePos / tilesPerRow) * 8;
 		std::vector<QBrush> palette = { QBrush(QColor(8,24,32)), QBrush(QColor(52,104,86)), QBrush(QColor(136,192,112)), QBrush(QColor(224,248,208)) };
 		drawTile(tile, offset, palette);
 	}
