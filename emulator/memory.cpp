@@ -7,9 +7,9 @@ Memory::Memory()
 
 Memory::~Memory() {}
 
-void Memory::loadMemory(QString filePath)
+void Memory::loadCartridge(Cartridge* cartridge)
 {
-	QByteArray byteArr = FileUtil::readBinaryFile(filePath);
+	std::vector<BYTE> byteArr = cartridge->getContents();
 
 	// Make sure not to copy more than MEM_SIZE
 	std::size_t copySize = std::min(static_cast<std::size_t>(byteArr.size()), static_cast<std::size_t>(MEM_SIZE));

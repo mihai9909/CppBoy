@@ -83,6 +83,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="emulator\cartridge.cpp" />
     <ClCompile Include="emulator\gbZ80.cpp" />
     <ClCompile Include="emulator\header_parser.cpp" />
     <ClCompile Include="emulator\memory.cpp" />
@@ -96,6 +97,7 @@
     <QtUic Include="gui\romstable.ui" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="emulator\cartridge.h" />
     <ClInclude Include="emulator\gbZ80.h" />
     <ClInclude Include="emulator\memory.h" />
     <ClInclude Include="utils\file_util.h" />

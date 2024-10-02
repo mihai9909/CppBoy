@@ -26,7 +26,7 @@ private:
 	Ui::ROMsTableClass ui;
 	QStandardItemModel* model;
 	HeaderParser* headerParser;
-	GameBoy* gameWindow;
+	GameBoy* gameBoy;
 
 private slots:
 	void on_addButton_clicked();

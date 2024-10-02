@@ -1,7 +1,7 @@
 #include "romstable.h"
 
-ROMsTable::ROMsTable(HeaderParser* headerParser, GameBoy* gameWindow, QWidget *parent, QString romsDir)
-	: QMainWindow(parent)
+ROMsTable::ROMsTable(HeaderParser* headerParser, GameBoy* gameBoy, QWidget *parent, QString romsDir)
+	: QMainWindow(parent), gameBoy(gameBoy), headerParser(headerParser)
 {
 	ui.setupUi(this);
 
@@ -14,8 +14,6 @@ ROMsTable::ROMsTable(HeaderParser* headerParser, GameBoy* gameWindow, QWidget *p
 
     ui.romsTable->setModel(model);
     ui.romsTable->hideColumn(4); // absolute path is used to load the File
-    this->headerParser = headerParser;
-    this->gameWindow = gameWindow;
 
     connect(ui.romsTable, &QTableView::doubleClicked, this, &ROMsTable::on_tableRow_doubleClicked);
 
@@ -57,8 +55,9 @@ void ROMsTable::on_tableRow_doubleClicked(const QModelIndex& index)
     if (!index.isValid()) return;
 
     QString fileName = model->item(index.row(), 4)->text();
+    Cartridge* cartridge = new Cartridge(fileName);
 
-    gameWindow->show(fileName);
+    gameBoy->show(cartridge);
 }
 
 void ROMsTable::addTableRow(QString filePath) {

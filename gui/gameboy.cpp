@@ -14,7 +14,8 @@ GameBoy::~GameBoy()
     delete memory;
 }
 
-void GameBoy::show(QString fileName) {
-    memory->loadMemory(fileName);
+void GameBoy::show(Cartridge* cartridge) {
+    this->cartridge = cartridge;
+    memory->loadCartridge(cartridge);
     QMainWindow::show();
 }

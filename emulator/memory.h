@@ -2,6 +2,7 @@
 
 #include "../types.h"
 #include "../utils/file_util.h"
+#include "../emulator/cartridge.h"
 #include <vector>
 #include <QString>
 #include <QByteArray>
@@ -13,7 +14,7 @@ class Memory {
 public:
 	Memory();
 	~Memory();
-	void loadMemory(QString filePath);
+	void loadCartridge(Cartridge* cartridge);
 	std::vector<BYTE> getByteSequence(int offset, int length);
 
 private:
