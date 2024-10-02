@@ -13,9 +13,6 @@ class GBZ80 {
 public:
 	GBZ80(Memory* mem);
 	~GBZ80();
-	WORD getAF();
-	WORD getA();
-	WORD getF();
 
 private:
 
