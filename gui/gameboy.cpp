@@ -19,3 +19,7 @@ void GameBoy::show(Cartridge* cartridge) {
     memory->loadCartridge(cartridge);
     QMainWindow::show();
 }
+
+void GameBoy::closeEvent(QCloseEvent* event) {
+    memory->flush();
+}

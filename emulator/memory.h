@@ -16,6 +16,7 @@ public:
 	~Memory();
 	void loadCartridge(Cartridge* cartridge);
 	std::vector<BYTE> getByteSequence(int offset, int length);
+	void flush();
 
 private:
 	std::vector<BYTE> bank1;

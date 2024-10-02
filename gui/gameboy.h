@@ -16,6 +16,9 @@ public:
 
     void show(Cartridge* cartridge);
 
+protected:
+    void closeEvent(QCloseEvent* event);
+
 private:
     PPU* ppu;
     Memory* memory;

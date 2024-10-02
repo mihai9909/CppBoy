@@ -20,3 +20,7 @@ void Memory::loadCartridge(Cartridge* cartridge)
 std::vector<BYTE> Memory::getByteSequence(int offset, int length) {
 	return std::vector<BYTE>(bank1.begin() + offset, bank1.begin() + offset + length);
 }
+
+void Memory::flush() {
+	bank1 = std::vector<BYTE>(MEM_SIZE, 0);
+}
