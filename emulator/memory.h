@@ -15,7 +15,8 @@ public:
 	Memory();
 	~Memory();
 	void loadCartridge(Cartridge* cartridge);
-	std::vector<BYTE> getByteSequence(int offset, int length);
+	std::vector<BYTE> readByteSequence(int offset, int length);
+	BYTE readByte(BYTE address);
 	void flush();
 
 private:

@@ -23,7 +23,7 @@ void PPU::displayTileMap() {
 	int tilesPerRow = 18;
 
 	for (int i = VRAM_START; i < VRAM_END; i += BTILE_SIZE) {
-		std::vector<BYTE> tileBytes = memory->getByteSequence(i, BTILE_SIZE);
+		std::vector<BYTE> tileBytes = memory->readByteSequence(i, BTILE_SIZE);
 		std::vector<WORD> tile = buildTile(tileBytes);
 		int normalizedTilePos = ((i - VRAM_START) / BTILE_SIZE);
 		QPoint offset = QPoint(normalizedTilePos % tilesPerRow, normalizedTilePos / tilesPerRow) * 8;

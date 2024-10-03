@@ -17,10 +17,14 @@ void Memory::loadCartridge(Cartridge* cartridge)
 	std::copy(byteArr.begin(), byteArr.begin() + copySize, bank1.begin());
 }
 
-std::vector<BYTE> Memory::getByteSequence(int offset, int length) {
+std::vector<BYTE> Memory::readByteSequence(int offset, int length) {
 	return std::vector<BYTE>(bank1.begin() + offset, bank1.begin() + offset + length);
 }
 
 void Memory::flush() {
 	bank1 = std::vector<BYTE>(MEM_SIZE, 0);
+}
+
+BYTE Memory::readByte(BYTE address) {
+	return bank1[address];
 }
