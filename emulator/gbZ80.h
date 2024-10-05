@@ -2,6 +2,7 @@
 
 #include "../types.h"
 #include "memory.h"
+#include "opcodes.h"
 
 /*** Flag reg bits ***/
 #define ZERO_FLAG 1<<7 // (7th bit of flag register)
@@ -15,6 +16,8 @@ public:
 	~GBZ80();
     BYTE fetchOpcode();
     std::vector<BYTE> fetchInstruction(BYTE opCode);
+    void executeInstruction(BYTE opCode, std::vector<BYTE> instr);
+    void execute();
 
 private:
 
@@ -60,6 +63,23 @@ private:
 		WORD sp; // stack pointer
 		WORD pc; // program counter
 	} Regs;
+
+    BYTE* getR8(BYTE index);
+    WORD* getR16(BYTE index);
+    WORD* getR16mem(BYTE index);
+    WORD* getR16stk(BYTE index);
+
+    // BLOCK 0
+    void loadR16N16(BYTE reg, std::vector<BYTE> instr);
+    void loadPR16memA(BYTE reg);
+    void loadAPR16mem(BYTE reg);
+    void loadPimm16SP(std::vector<BYTE> imm16);
+    void incR16(BYTE r16);
+    void decR16(BYTE r16);
+    void addHLR16(BYTE r16);
+    void incR8(BYTE r8);
+    void decR8(BYTE r8);
+    void loadR8imm8(BYTE r8, std::vector<BYTE> imm8);
 
     // number of bytes per instruction excluding opcode
     std::vector<int> instLens = { 0, 2, 0, 0, 0, 0, 1, 0, 2, 0, 0, 0, 0, 0, 1, 0, // 0x00

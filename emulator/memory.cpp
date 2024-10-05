@@ -28,3 +28,11 @@ void Memory::flush() {
 BYTE Memory::readByte(BYTE address) {
 	return bank1[address];
 }
+
+BYTE* Memory::readPByte(BYTE address) {
+	return &bank1[address];
+}
+
+void Memory::setByte(BYTE address, BYTE value) {
+	bank1[address] = value;
+}

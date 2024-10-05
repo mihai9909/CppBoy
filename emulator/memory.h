@@ -18,6 +18,8 @@ public:
 	std::vector<BYTE> readByteSequence(int offset, int length);
 	BYTE readByte(BYTE address);
 	void flush();
+	BYTE* readPByte(BYTE address);
+	void setByte(BYTE address, BYTE value);
 
 private:
 	std::vector<BYTE> bank1;
