@@ -18,25 +18,31 @@ void GBZ80::executeInstruction(BYTE opCode, std::vector<BYTE> instr) {
 	BYTE r16 = (opCode & BITS_45) >> 4;
 	BYTE r8 = (opCode & BITS_345) >> 3;
 
+	switch (opCode) {
+		case NO_OP: return;
+		case LD_PIMM16_SP: loadPimm16SP(instr); return;
+	}
+
 	switch (opCode & (~BITS_45))
 	{
-	case NO_OP: break;
-	case LD_R16_IMM16: loadR16N16(r16, instr);  break; 
-	case LD_PR16MEM_A: loadPR16memA(r16); break;
-	case LD_A_PR16MEM: loadAPR16mem(r16); break;
-	case LD_PIMM16_SP: loadPimm16SP(instr); break;
-	case INC_R16: incR16(r16); break;
-	case DEC_R16: decR16(r16); break;
-	case ADD_HL_R16: addHLR16(r16); break;
+	case LD_R16_IMM16: loadR16N16(r16, instr);  return; 
+	case LD_PR16MEM_A: loadPR16memA(r16); return;
+	case LD_A_PR16MEM: loadAPR16mem(r16); return;
+	case INC_R16: incR16(r16); return;
+	case DEC_R16: decR16(r16); return;
+	case ADD_HL_R16: addHLR16(r16); return;
 	default: 
-		switch (opCode & (~BITS_345))
-		{
-		case INC_R8: incR8(r8); break;
-		case DEC_R8: decR8(r8); break;
-		case LD_R8_IMM8: loadR8imm8(r8, instr); break;
-		default:
-			break;
-		}
+		break;
+	}
+
+
+	switch (opCode & (~BITS_345))
+	{
+	case INC_R8: incR8(r8); return;
+	case DEC_R8: decR8(r8); return;
+	case LD_R8_IMM8: loadR8imm8(r8, instr); return;
+	default:
+		break;
 	}
 }
 
