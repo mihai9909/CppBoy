@@ -17,10 +17,30 @@ std::vector<BYTE> GBZ80::fetchInstruction(BYTE opCode) {
 void GBZ80::executeInstruction(BYTE opCode, std::vector<BYTE> instr) {
 	BYTE r16 = (opCode & BITS_45) >> 4;
 	BYTE r8 = (opCode & BITS_345) >> 3;
+	BYTE cond = (opCode & BITS_34) >> 3;
+	BYTE r8_low = (opCode & BITS_012);
 
 	switch (opCode) {
 		case NO_OP: return;
 		case LD_PIMM16_SP: loadPimm16SP(instr); return;
+		case RLCA: rlca(); return;
+		case RRCA: rrca(); return;
+		case RLA: rla(); return;
+		case RRA: rra(); return;
+		case DAA: daa(); return;
+		case SCF: scf(); return;
+		case CCF: ccf(); return;
+		case JR_IMM8: jrimm8(instr); return;
+		case JR_COND_IMM8: jrcondimm8(cond, instr); return;
+		case STOP: stop(); return;
+		case HALT: halt(); return;
+		default: break;
+	}
+
+	switch (opCode & (~BITS_34))
+	{
+	case JR_IMM8: jrimm8(instr); return;
+	default: break;
 	}
 
 	switch (opCode & (~BITS_45))
@@ -31,19 +51,31 @@ void GBZ80::executeInstruction(BYTE opCode, std::vector<BYTE> instr) {
 	case INC_R16: incR16(r16); return;
 	case DEC_R16: decR16(r16); return;
 	case ADD_HL_R16: addHLR16(r16); return;
-	default: 
-		break;
+	default: break;
 	}
 
+	switch (opCode & (~BITS_012)) {
+	case ADD_A_R8: addAR8(r8_low);
+	case ADC_A_R8: adcAR8(r8_low);
+	case SUB_A_R8: subAR8(r8_low);
+	case SBC_A_R8: sbcAR8(r8_low);
+	case AND_A_R8: andAR8(r8_low);
+	case XOR_A_R8: xorAR8(r8_low);
+	case OR_A_R8: orAR8(r8_low);
+	case CP_A_IMM8: cpAR8(r8_low);
+	default: break;
+	}
 
 	switch (opCode & (~BITS_345))
 	{
 	case INC_R8: incR8(r8); return;
 	case DEC_R8: decR8(r8); return;
 	case LD_R8_IMM8: loadR8imm8(r8, instr); return;
-	default:
-		break;
+	default: break;
 	}
+
+	if (opCode & ~(BITS_012 | BITS_345))
+		loadR8R8(r8, r8_low);
 }
 
 void GBZ80::execute() {
@@ -88,6 +120,34 @@ WORD* GBZ80::getR16stk(BYTE index) {
 	case 3: return &regs.af; break;
 	default: break; //TODO: display error
 	}
+}
+
+bool GBZ80::evaluateCondition(BYTE cond) {
+	switch (cond)
+	{
+	case 0: return (regs.f & ZERO_FLAG) == 0;
+	case 1: return (regs.f & ZERO_FLAG) != 0;
+	case 2: return (regs.f & CARRY_FLAG) == 0;
+	case 3: return (regs.f & CARRY_FLAG) != 0;
+	default:
+		break;
+	}
+}
+
+void GBZ80::setZFlag(bool flag) {
+	regs.f = flag ? (regs.f | ZERO_FLAG) : (regs.f & (~ZERO_FLAG));
+}
+
+void GBZ80::setNFlag(bool flag) {
+	regs.f = flag ? (regs.f | SUB_FLAG) : (regs.f & (~SUB_FLAG));
+}
+
+void GBZ80::setHFlag(bool flag) {
+	regs.f = flag ? (regs.f | HALF_CARRY_FLAG) : (regs.f & (~HALF_CARRY_FLAG));
+}
+
+void GBZ80::setCFlag(bool flag) {
+	regs.f = flag ? (regs.f | CARRY_FLAG) : (regs.f & (~CARRY_FLAG));
 }
 
 void GBZ80::loadR16N16(BYTE reg, std::vector<BYTE> instr) {
@@ -159,4 +219,101 @@ void GBZ80::decR8(BYTE r8) {
 
 void GBZ80::loadR8imm8(BYTE r8, std::vector<BYTE> imm8) {
 	(*getR8(r8)) = imm8[0];
+}
+
+void GBZ80::rlca() {
+	BYTE msb = regs.a >> 7;
+	regs.a = (regs.a << 1) | msb;
+}
+
+void GBZ80::rrca() {
+	BYTE lsb = regs.a << 7;
+	regs.a = (regs.a >> 1) | lsb;
+}
+
+void GBZ80::rla() {
+	regs.a = regs.a << 1;
+}
+
+void GBZ80::rra() {
+	regs.a = regs.a >> 1;
+}
+
+void GBZ80::daa() {
+	// TODO: decimal adjust accumulator
+}
+
+void GBZ80::cpl() {
+	regs.a = ~regs.a;
+}
+
+void GBZ80::scf() {
+	regs.f = (regs.f | CARRY_FLAG) & ~(SUB_FLAG | HALF_CARRY_FLAG);
+}
+
+void GBZ80::ccf() {
+	regs.f = (regs.f ^ CARRY_FLAG) & ~(SUB_FLAG | HALF_CARRY_FLAG);
+}
+
+void GBZ80::jrimm8(std::vector<BYTE> instr) {
+	regs.pc = regs.pc + (SBYTE)instr[0];
+}
+
+void GBZ80::jrcondimm8(BYTE cond, std::vector<BYTE> instr) {
+	if (evaluateCondition(cond)) {
+		regs.pc = regs.pc + (SBYTE)instr[0];
+	}
+}
+
+void GBZ80::stop() {
+	// TODO
+}
+
+void GBZ80::halt() {
+	// TODO
+}
+
+void GBZ80::loadR8R8(BYTE dstR8, BYTE srcR8) {
+	*getR8(dstR8) = *getR8(srcR8);
+}
+
+void GBZ80::addAR8(BYTE R8) {
+	regs.a += *getR8(R8);
+}
+
+void GBZ80::adcAR8(BYTE R8) {
+	addAR8(R8);
+	if ((regs.f | CARRY_FLAG) != 0)
+		regs.a++; // add carry flag
+}
+
+void GBZ80::subAR8(BYTE R8) {
+	regs.a -= *getR8(R8);
+}
+
+void GBZ80::sbcAR8(BYTE R8) {
+	subAR8(R8);
+	if ((regs.f | CARRY_FLAG) != 0)
+		regs.a--; // add carry flag
+}
+
+void GBZ80::andAR8(BYTE R8) {
+	regs.a = regs.a & *getR8(R8);
+}
+
+void GBZ80::xorAR8(BYTE R8) {
+	regs.a = regs.a ^ *getR8(R8);
+}
+
+void GBZ80::orAR8(BYTE R8) {
+	regs.a = regs.a | *getR8(R8);
+}
+
+void GBZ80::cpAR8(BYTE R8) {
+	BYTE res = regs.a - *getR8(R8);
+
+	setZFlag(res == 0);
+	setNFlag(true);
+	setHFlag(LOWER_NIBBLE(regs.a) < LOWER_NIBBLE(*getR8(R8)));
+	setCFlag(regs.a < *getR8(R8));
 }

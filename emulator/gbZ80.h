@@ -10,6 +10,9 @@
 #define HALF_CARRY_FLAG 1<<5 // (5th bit of flag register)
 #define CARRY_FLAG 1<<4 // (4th bit of flag register)
 
+/*** MACROS ***/
+#define LOWER_NIBBLE(byte) ((byte) & 0x0F) // lower
+
 class GBZ80 {
 public:
 	GBZ80(Memory* mem);
@@ -69,7 +72,13 @@ private:
     WORD* getR16mem(BYTE index);
     WORD* getR16stk(BYTE index);
 
-    // BLOCK 0
+    bool evaluateCondition(BYTE cond);
+
+    void setZFlag(bool flag);
+    void setNFlag(bool flag);
+    void setHFlag(bool flag);
+    void setCFlag(bool flag);
+
     void loadR16N16(BYTE reg, std::vector<BYTE> instr);
     void loadPR16memA(BYTE reg);
     void loadAPR16mem(BYTE reg);
@@ -80,6 +89,32 @@ private:
     void incR8(BYTE r8);
     void decR8(BYTE r8);
     void loadR8imm8(BYTE r8, std::vector<BYTE> imm8);
+
+    void rlca();
+    void rrca();
+    void rla();
+    void rra();
+    void daa();
+    void cpl();
+    void scf();
+    void ccf();
+
+    void jrimm8(std::vector<BYTE> instr);
+    void jrcondimm8(BYTE cond, std::vector<BYTE> instr);
+
+    void stop();
+
+    void loadR8R8(BYTE dstR8, BYTE srcR8);
+    void halt();
+
+    void addAR8(BYTE R8);
+    void adcAR8(BYTE R8);
+    void subAR8(BYTE R8);
+    void sbcAR8(BYTE R8);
+    void andAR8(BYTE R8);
+    void xorAR8(BYTE R8);
+    void orAR8(BYTE R8);
+    void cpAR8(BYTE R8);
 
     // number of bytes per instruction excluding opcode
     std::vector<int> instLens = { 0, 2, 0, 0, 0, 0, 1, 0, 2, 0, 0, 0, 0, 0, 1, 0, // 0x00

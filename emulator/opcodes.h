@@ -1,5 +1,7 @@
 #pragma once
 
+#define BITS_012 0x07
+#define BITS_34 0x18
 #define BITS_45 0x30
 #define BITS_345 0x38
 
