@@ -5,6 +5,8 @@ GBZ80::GBZ80(Memory* memory) : mem(memory)
 	regs = Regs();
 }
 
+GBZ80::~GBZ80() { }
+
 BYTE GBZ80::fetchOpcode() { return mem->readByte(regs.pc++); }
 
 std::vector<BYTE> GBZ80::fetchInstruction(BYTE opCode) {
@@ -169,8 +171,8 @@ void GBZ80::loadPR16memA(BYTE reg) {
 
 	mem->setByte(*reg16mem, regs.a);
 
-	if (reg == 2) { *reg16mem++; } // hl+
-	if (reg == 3) { *reg16mem--; } // hl-
+	if (reg == 2) { (*reg16mem)++; } // hl+
+	if (reg == 3) { (*reg16mem)--; } // hl-
 }
 
 // same as above but swapped dest and src
@@ -187,8 +189,8 @@ void GBZ80::loadAPR16mem(BYTE reg) {
 
 	regs.a = mem->readByte(*reg16mem);
 
-	if (reg == 2) { *reg16mem++; } // hl+
-	if (reg == 3) { *reg16mem--; } // hl-
+	if (reg == 2) { (* reg16mem)++; } // hl+
+	if (reg == 3) { (* reg16mem)--; } // hl-
 }
 
 void GBZ80::loadPimm16SP(std::vector<BYTE> instr) {
