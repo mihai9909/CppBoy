@@ -102,6 +102,9 @@ private:
     void jrimm8(std::vector<BYTE> instr);
     void jrcondimm8(BYTE cond, std::vector<BYTE> instr);
 
+    void retCond(BYTE cond);
+    void ret();
+
     void stop();
 
     void loadR8R8(BYTE dstR8, BYTE srcR8);
@@ -115,6 +118,15 @@ private:
     void xorAR8(BYTE R8);
     void orAR8(BYTE R8);
     void cpAR8(BYTE R8);
+
+    void addAimm8(std::vector<BYTE> imm8);
+    void adcAimm8(std::vector<BYTE> imm8);
+    void subAimm8(std::vector<BYTE> imm8);
+    void sbcAimm8(std::vector<BYTE> imm8);
+    void andAimm8(std::vector<BYTE> imm8);
+    void xorAimm8(std::vector<BYTE> imm8);
+    void orAimm8(std::vector<BYTE> imm8);
+    void cpAimm8(std::vector<BYTE> imm8);
 
     // number of bytes per instruction excluding opcode
     std::vector<int> instLens = { 0, 2, 0, 0, 0, 0, 1, 0, 2, 0, 0, 0, 0, 0, 1, 0, // 0x00
