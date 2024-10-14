@@ -57,14 +57,14 @@ void GBZ80::executeInstruction(BYTE opCode, std::vector<BYTE> instr) {
 	}
 
 	switch (opCode & (~BITS_012)) {
-	case ADD_A_R8: addAR8(r8_low);
-	case ADC_A_R8: adcAR8(r8_low);
-	case SUB_A_R8: subAR8(r8_low);
-	case SBC_A_R8: sbcAR8(r8_low);
-	case AND_A_R8: andAR8(r8_low);
-	case XOR_A_R8: xorAR8(r8_low);
-	case OR_A_R8: orAR8(r8_low);
-	case CP_A_IMM8: cpAR8(r8_low);
+	case ADD_A_R8: addAR8(r8_low); return;
+	case ADC_A_R8: adcAR8(r8_low); return;
+	case SUB_A_R8: subAR8(r8_low); return;
+	case SBC_A_R8: sbcAR8(r8_low); return;
+	case AND_A_R8: andAR8(r8_low); return;
+	case XOR_A_R8: xorAR8(r8_low); return;
+	case OR_A_R8: orAR8(r8_low); return;
+	case CP_A_IMM8: cpAR8(r8_low); return;
 	default: break;
 	}
 
