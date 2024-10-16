@@ -5,10 +5,10 @@
 #include "opcodes.h"
 
 /*** Flag reg bits ***/
-#define ZERO_FLAG 1<<7 // (7th bit of flag register)
-#define SUB_FLAG 1<<6 // subtraction flag (6th bit of flag register)
-#define HALF_CARRY_FLAG 1<<5 // (5th bit of flag register)
-#define CARRY_FLAG 1<<4 // (4th bit of flag register)
+#define ZERO_FLAG (1<<7) // (7th bit of flag register)
+#define SUB_FLAG (1<<6) // subtraction flag (6th bit of flag register)
+#define HALF_CARRY_FLAG (1<<5) // (5th bit of flag register)
+#define CARRY_FLAG (1<<4) // (4th bit of flag register)
 
 /*** MACROS ***/
 #define LOWER_NIBBLE(byte) ((byte) & 0x0F) // lower

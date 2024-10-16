@@ -213,6 +213,8 @@ void GBZ80::addHLR16(BYTE r16) {
 
 void GBZ80::incR8(BYTE r8) {
 	(*getR8(r8))++;
+
+	setZFlag(*getR8(r8) == 0);
 }
 
 void GBZ80::decR8(BYTE r8) {
@@ -226,19 +228,39 @@ void GBZ80::loadR8imm8(BYTE r8, std::vector<BYTE> imm8) {
 void GBZ80::rlca() {
 	BYTE msb = regs.a >> 7;
 	regs.a = (regs.a << 1) | msb;
+	setCFlag(msb == 0x01);
+	setZFlag(false);
+	setNFlag(false);
+	setHFlag(false);
 }
 
 void GBZ80::rrca() {
 	BYTE lsb = regs.a << 7;
+	setCFlag(regs.a & 0x01);
 	regs.a = (regs.a >> 1) | lsb;
+	setZFlag(false);
+	setNFlag(false);
+	setHFlag(false);
 }
 
 void GBZ80::rla() {
-	regs.a = regs.a << 1;
+	BYTE carry = (regs.f & CARRY_FLAG) >> 4;
+	BYTE msb = regs.a >> 7;
+	setCFlag(msb);
+	regs.a = (regs.a << 1) | carry;
+	setZFlag(false);
+	setNFlag(false);
+	setHFlag(false);
 }
 
 void GBZ80::rra() {
-	regs.a = regs.a >> 1;
+	BYTE carry = (regs.f & CARRY_FLAG) >> 4;
+	BYTE lsb = regs.a & 0x01;
+	setCFlag(lsb);
+	regs.a = (regs.a >> 1) | (carry << 7);
+	setZFlag(false);
+	setNFlag(false);
+	setHFlag(false);
 }
 
 void GBZ80::daa() {
@@ -247,6 +269,8 @@ void GBZ80::daa() {
 
 void GBZ80::cpl() {
 	regs.a = ~regs.a;
+	setNFlag(true);
+	setHFlag(true);
 }
 
 void GBZ80::scf() {
