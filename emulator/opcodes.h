@@ -35,7 +35,7 @@
 #define JR_COND_IMM8 0x2
 
 #define STOP 0x10
-#define HALT 0xF6 // LD [hl], [hl]
+#define HALT 0x76 // LD [hl], [hl]
 
 #define LD_R8_R8 0x40
 
@@ -66,18 +66,20 @@
 #define JP_IMM16 0xC3
 #define JP_HL 0xE9
 #define CALL_COND_IMM16 0xC4
-#define CALL_IMM8 0xCD
+#define CALL_IMM16 0xCD
 #define RST_TGT3 0xC7
 
 #define POP_R16STK 0xC1
 #define PUSH_R16STK 0xC5
 
 #define PREFIX 0xCB
+
 #define LDH_MEMC_A 0xE2
 #define LDH_PIMM8_A 0xE0
+#define LD_PIMM16_A 0xEA
 #define LDH_A_MEMC 0xF2
 #define LDH_A_PIMM8 0xF0
-#define LDH_A_PIMM16 0xFA
+#define LD_A_PIMM16 0xFA
 
 #define ADD_SP_IMM8 0xE8
 #define LD_HL_SP_IMM8 0xF8

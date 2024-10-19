@@ -16,10 +16,10 @@ public:
 	~Memory();
 	void loadCartridge(Cartridge* cartridge);
 	std::vector<BYTE> readByteSequence(int offset, int length);
-	BYTE readByte(BYTE address);
+	BYTE readByte(WORD address);
 	void flush();
-	BYTE* readPByte(BYTE address);
-	void setByte(BYTE address, BYTE value);
+	BYTE* readPByte(WORD address);
+	void setByte(WORD address, BYTE value);
 
 private:
 	std::vector<BYTE> bank1;

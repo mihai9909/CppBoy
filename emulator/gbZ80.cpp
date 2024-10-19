@@ -33,15 +33,40 @@ void GBZ80::executeInstruction(BYTE opCode, std::vector<BYTE> instr) {
 		case SCF: scf(); return;
 		case CCF: ccf(); return;
 		case JR_IMM8: jrimm8(instr); return;
-		case JR_COND_IMM8: jrcondimm8(cond, instr); return;
 		case STOP: stop(); return;
 		case HALT: halt(); return;
+		case ADD_A_IMM8: addAimm8(instr); return;
+		case ADC_A_IMM8: adcAimm8(instr); return;
+		case SUB_A_IMM8: subAimm8(instr); return;
+		case SBC_A_IMM8: sbcAimm8(instr); return;
+		case AND_A_IMM8: andAimm8(instr); return;
+		case XOR_A_IMM8: xorAimm8(instr); return;
+		case OR_A_IMM8: orAimm8(instr); return;
+		case CP_A_IMM8: cpAimm8(instr); return;
+		case RET: ret(); return;
+		case RETI: reti(); return;
+		case JP_IMM16: jpimm16(instr); return;
+		case JP_HL: jpHL(); return;
+		case CALL_IMM16: callimm16(instr); return;
+		case LDH_MEMC_A: ldhMemCA(); return;
+		case LDH_PIMM8_A: ldhPimm8A(instr); return;
+		case LD_PIMM16_A: ldPimm16A(instr); return;
+		case LDH_A_MEMC: ldhAMemC(); return;
+		case LDH_A_PIMM8: ldhAPimm8(instr); return;
+		case LD_A_PIMM16: ldAPimm16(instr); return;
+		case ADD_SP_IMM8: addSPimm8(instr); return;
+		case LD_HL_SP_IMM8: ldHLSPimm8(instr); return;
+		case LD_SP_HL: ldSPHL(); return;
+		case DI: di(); return;
+		case EI: ei(); return;
 		default: break;
 	}
 
 	switch (opCode & (~BITS_34))
 	{
-	case JR_IMM8: jrimm8(instr); return;
+	case JR_COND_IMM8: jrcondimm8(cond, instr); return;
+	case RET_COND: retCond(cond); return;
+	case JP_COND_IMM16: jpCondimm16(cond, instr); return;
 	default: break;
 	}
 
@@ -53,6 +78,8 @@ void GBZ80::executeInstruction(BYTE opCode, std::vector<BYTE> instr) {
 	case INC_R16: incR16(r16); return;
 	case DEC_R16: decR16(r16); return;
 	case ADD_HL_R16: addHLR16(r16); return;
+	case POP_R16STK: popR16stk(r16); return;
+	case PUSH_R16STK: pushR16stk(r16); return;
 	default: break;
 	}
 
@@ -73,6 +100,7 @@ void GBZ80::executeInstruction(BYTE opCode, std::vector<BYTE> instr) {
 	case INC_R8: incR8(r8); return;
 	case DEC_R8: decR8(r8); return;
 	case LD_R8_IMM8: loadR8imm8(r8, instr); return;
+	case RST_TGT3: rstTgt(opCode & BITS_345); return;
 	default: break;
 	}
 
@@ -397,4 +425,108 @@ void GBZ80::retCond(BYTE cond) {
 		return;
 
 	ret();
+}
+
+void GBZ80::reti() {
+	//TODO: execute EI
+	ret();
+}
+
+void GBZ80::jpCondimm16(BYTE cond, std::vector<BYTE> instr) {
+	if (evaluateCondition(cond)) {
+		jpimm16(instr);
+	}
+}
+
+void GBZ80::jpimm16(std::vector<BYTE> instr) {
+	regs.pc = ((WORD)instr[1]) << 8 | instr[0];
+}
+
+void GBZ80::jpHL() {
+	regs.pc = regs.hl;
+}
+
+
+void GBZ80::callCondimm16(BYTE cond, std::vector<BYTE> instr) {
+	if (evaluateCondition(cond)) {
+		callimm16(instr);
+	}
+}
+
+void GBZ80::callimm16(std::vector<BYTE> instr) {
+	regs.sp--;
+	mem->setByte(regs.sp, regs.pc >> 8);
+	regs.sp--;
+	mem->setByte(regs.sp, (BYTE)regs.pc);
+	regs.pc = ((WORD)instr[1]) << 8 | instr[0];
+}
+
+void GBZ80::rstTgt(BYTE tgt) {
+	regs.sp--;
+	mem->setByte(regs.sp, regs.pc >> 8);
+	regs.sp--;
+	mem->setByte(regs.sp, (BYTE)regs.pc);
+	regs.pc = (WORD)tgt;
+}
+
+void GBZ80::pushR16stk(BYTE r16stk) {
+	WORD reg = *getR16stk(r16stk);
+	regs.sp--;
+	mem->setByte(regs.sp, (reg) >> 8);
+	regs.sp--;
+	mem->setByte(regs.sp, (BYTE)reg);
+}
+
+void GBZ80::popR16stk(BYTE r16stk) {
+	WORD* reg = getR16stk(r16stk);
+	*reg = mem->readByte(regs.sp);
+	regs.sp++;
+	*reg |= (WORD)mem->readByte(regs.sp) << 8;
+	regs.sp++;
+}
+
+void GBZ80::ldhMemCA() {
+	mem->setByte(0xFF00 | regs.c, regs.a);
+}
+
+void GBZ80::ldhPimm8A(std::vector<BYTE> instr) {
+	mem->setByte(0xFF00 | instr[0], regs.a);
+}
+
+void GBZ80::ldPimm16A(std::vector<BYTE> instr) {
+	WORD addr = ((WORD)instr[1]) << 8 | instr[0];
+	mem->setByte(addr, regs.a);
+}
+
+void GBZ80::ldhAMemC() {
+	regs.a = mem->readByte(0xFF00 | regs.c);
+}
+
+void GBZ80::ldhAPimm8(std::vector<BYTE> instr) {
+	regs.a = mem->readByte(0xFF00 | instr[0]);
+}
+
+void GBZ80::ldAPimm16(std::vector<BYTE> instr) {
+	WORD addr = ((WORD)instr[1]) << 8 | instr[0];
+	regs.a = mem->readByte(addr);
+}
+
+void GBZ80::addSPimm8(std::vector<BYTE> instr) {
+	regs.sp += (SWORD)(SBYTE)instr[0]; // for sign extension
+}
+
+void GBZ80::ldHLSPimm8(std::vector<BYTE> instr) {
+	regs.hl = regs.sp + (SWORD)(SBYTE)instr[0];
+}
+
+void GBZ80::ldSPHL() {
+	regs.hl = regs.sp;
+}
+
+void GBZ80::di() {
+
+}
+
+void GBZ80::ei() {
+
 }

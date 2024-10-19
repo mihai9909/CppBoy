@@ -25,14 +25,14 @@ void Memory::flush() {
 	bank1 = std::vector<BYTE>(MEM_SIZE, 0);
 }
 
-BYTE Memory::readByte(BYTE address) {
+BYTE Memory::readByte(WORD address) {
 	return bank1[address];
 }
 
-BYTE* Memory::readPByte(BYTE address) {
+BYTE* Memory::readPByte(WORD address) {
 	return &bank1[address];
 }
 
-void Memory::setByte(BYTE address, BYTE value) {
+void Memory::setByte(WORD address, BYTE value) {
 	bank1[address] = value;
 }

@@ -104,6 +104,22 @@ private:
 
     void retCond(BYTE cond);
     void ret();
+    void reti();
+    void jpCondimm16(BYTE cond, std::vector<BYTE> instr);
+    void jpimm16(std::vector<BYTE> instr);
+    void jpHL();
+    void callCondimm16(BYTE cond, std::vector<BYTE> instr);
+    void callimm16(std::vector<BYTE> instr);
+    void rstTgt(BYTE tgt);
+    void popR16stk(BYTE r16stk);
+    void pushR16stk(BYTE r16stk);
+
+    void ldhMemCA();
+    void ldhPimm8A(std::vector<BYTE> instr);
+    void ldPimm16A(std::vector<BYTE> instr);
+    void ldhAMemC();
+    void ldhAPimm8(std::vector<BYTE> instr);
+    void ldAPimm16(std::vector<BYTE> instr);
 
     void stop();
 
@@ -127,6 +143,13 @@ private:
     void xorAimm8(std::vector<BYTE> imm8);
     void orAimm8(std::vector<BYTE> imm8);
     void cpAimm8(std::vector<BYTE> imm8);
+
+    void addSPimm8(std::vector<BYTE> imm8);
+    void ldHLSPimm8(std::vector<BYTE> imm8);
+    void ldSPHL();
+
+    void di();
+    void ei();
 
     // number of bytes per instruction excluding opcode
     std::vector<int> instLens = { 0, 2, 0, 0, 0, 0, 1, 0, 2, 0, 0, 0, 0, 0, 1, 0, // 0x00
