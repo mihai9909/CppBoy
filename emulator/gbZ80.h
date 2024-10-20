@@ -12,6 +12,8 @@
 
 /*** MACROS ***/
 #define LOWER_NIBBLE(byte) ((byte) & 0x0F) // lower
+#define LOWER_BYTE(word) ((word) & 0x00FF)
+#define LOWER_12BITS(word) ((word) & 0x0FFF)
 
 class GBZ80 {
 public:
