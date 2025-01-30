@@ -12,6 +12,7 @@
 
 /*** MACROS ***/
 #define LOWER_NIBBLE(byte) ((byte) & 0x0F) // lower
+#define HIGHER_NIBBLE(byte) ((byte) >> 4)
 #define LOWER_BYTE(word) ((word) & 0x00FF)
 #define LOWER_12BITS(word) ((word) & 0x0FFF)
 
@@ -68,6 +69,8 @@ private:
 		WORD sp; // stack pointer
 		WORD pc; // program counter
 	} Regs;
+
+    bool ime;
 
     BYTE* getR8(BYTE index);
     WORD* getR16(BYTE index);

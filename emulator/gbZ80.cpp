@@ -3,6 +3,9 @@
 GBZ80::GBZ80(Memory* memory) : mem(memory)
 {
 	regs = Regs();
+	regs.pc = 0x00;
+	regs.af = 0x6000;
+	regs.sp = 0x00;
 }
 
 GBZ80::~GBZ80() { }
@@ -236,10 +239,12 @@ void GBZ80::decR16(BYTE r16) {
 
 void GBZ80::addHLR16(BYTE r16) {
 	WORD hl = regs.hl;
+	WORD prevR16 = *getR16(r16);
+
 	regs.hl += *getR16(r16);
 
 	setNFlag(false);
-	setHFlag(LOWER_12BITS(hl) + LOWER_12BITS(*getR16(r16)) > 0xfff);
+	setHFlag(LOWER_12BITS(hl) + LOWER_12BITS(prevR16) > 0xfff);
 	setCFlag(hl < regs.hl);
 }
 
@@ -302,7 +307,18 @@ void GBZ80::rra() {
 }
 
 void GBZ80::daa() {
-	// TODO: decimal adjust accumulator
+	BYTE a = regs.a;
+	if((regs.f & HALF_CARRY_FLAG) != 0 || LOWER_NIBBLE(regs.a) > 0x09) {
+		regs.a += 0x06;
+	}
+
+	if ((regs.f & CARRY_FLAG) != 0 || HIGHER_NIBBLE(regs.a) > 0x09) {
+		regs.a += 0x60;
+	}
+
+	setZFlag(regs.a == 0);
+	setHFlag(false);
+	setCFlag(regs.a < a);
 }
 
 void GBZ80::cpl() {
@@ -343,47 +359,52 @@ void GBZ80::loadR8R8(BYTE dstR8, BYTE srcR8) {
 
 void GBZ80::addAR8(BYTE R8) {
 	BYTE a = regs.a;
+	BYTE prevR8 = *getR8(R8);
 
 	regs.a += *getR8(R8);
 
 	setZFlag(regs.a == 0x00);
 	setNFlag(false);
-	setHFlag(LOWER_NIBBLE(a) + LOWER_NIBBLE(*getR8(R8)) > 0x0F);
+	setHFlag(LOWER_NIBBLE(a) + LOWER_NIBBLE(prevR8) > 0x0F);
+	setCFlag(regs.a < a);
 }
 
 void GBZ80::adcAR8(BYTE R8) {
 	BYTE carry = (regs.f & CARRY_FLAG) >> 4;
 	BYTE a = regs.a;
+	BYTE prevR8 = *getR8(R8);
 
 	regs.a = regs.a + *getR8(R8) + carry;
 
 	setZFlag(regs.a == 0);
 	setNFlag(false);
-	setHFlag(LOWER_NIBBLE(a) + LOWER_NIBBLE(*getR8(R8)) + carry > 0x0F);
-	setCFlag(regs.a < a);
+	setHFlag(LOWER_NIBBLE(a) + LOWER_NIBBLE(prevR8) + carry > 0x0F);
+	setCFlag(regs.a < a || (regs.a == a && carry == 0x01));
 }
 
 void GBZ80::subAR8(BYTE R8) {
 	BYTE a = regs.a;
+	BYTE prevR8 = *getR8(R8);
 
 	regs.a -= *getR8(R8);
 
 	setZFlag(regs.a == 0);
 	setNFlag(true);
-	setHFlag(LOWER_12BITS(*getR8(R8)) > LOWER_12BITS(a));
+	setHFlag(LOWER_NIBBLE(prevR8) > LOWER_NIBBLE(a));
 	setCFlag(regs.a > a);
 }
 
 void GBZ80::sbcAR8(BYTE R8) {
 	BYTE a = regs.a;
+	BYTE prevR8 = *getR8(R8);
 	BYTE carry = (regs.f & CARRY_FLAG) >> 4;
 
 	regs.a = regs.a - *getR8(R8) - carry;
 
 	setZFlag(regs.a == 0);
 	setNFlag(true);
-	setHFlag(LOWER_12BITS(*getR8(R8) + carry) > LOWER_12BITS(a));
-	setCFlag(regs.a > a);
+	setHFlag(LOWER_NIBBLE(prevR8 + carry) > LOWER_NIBBLE(a));
+	setCFlag(regs.a > a || (regs.a == a && carry == 0x01));
 }
 
 void GBZ80::andAR8(BYTE R8) {
@@ -430,6 +451,7 @@ void GBZ80::addAimm8(std::vector<BYTE> instr) {
 	setZFlag(regs.a == 0x00);
 	setNFlag(false);
 	setHFlag(LOWER_NIBBLE(a) + LOWER_NIBBLE(instr[0]) > 0x0F);
+	setCFlag(regs.a < a);
 }
 
 void GBZ80::adcAimm8(std::vector<BYTE> instr) {
@@ -441,7 +463,7 @@ void GBZ80::adcAimm8(std::vector<BYTE> instr) {
 	setZFlag(regs.a == 0);
 	setNFlag(false);
 	setHFlag(LOWER_NIBBLE(a) + LOWER_NIBBLE(instr[0]) + carry > 0x0F);
-	setCFlag(regs.a < a);
+	setCFlag(regs.a < a || (regs.a == a && carry == 0x01));
 }
 
 void GBZ80::subAimm8(std::vector<BYTE> instr) {
@@ -451,7 +473,7 @@ void GBZ80::subAimm8(std::vector<BYTE> instr) {
 
 	setZFlag(regs.a == 0);
 	setNFlag(true);
-	setHFlag(LOWER_12BITS(instr[0]) > LOWER_12BITS(a));
+	setHFlag(LOWER_NIBBLE(instr[0]) > LOWER_NIBBLE(a));
 	setCFlag(regs.a > a);
 }
 
@@ -463,7 +485,7 @@ void GBZ80::sbcAimm8(std::vector<BYTE> instr) {
 
 	setZFlag(regs.a == 0);
 	setNFlag(true);
-	setHFlag(LOWER_12BITS(instr[0] + carry) > LOWER_12BITS(a));
+	setHFlag(LOWER_NIBBLE(instr[0] + carry) > LOWER_NIBBLE(a));
 	setCFlag(regs.a > a);
 }
 
@@ -518,7 +540,7 @@ void GBZ80::retCond(BYTE cond) {
 }
 
 void GBZ80::reti() {
-	//TODO: execute EI
+	ei();
 	ret();
 }
 
@@ -628,9 +650,9 @@ void GBZ80::ldSPHL() {
 }
 
 void GBZ80::di() {
-
+	ime = false;
 }
 
 void GBZ80::ei() {
-
+	ime = true;
 }
