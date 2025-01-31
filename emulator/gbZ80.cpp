@@ -3,9 +3,6 @@
 GBZ80::GBZ80(Memory* memory) : mem(memory)
 {
 	regs = Regs();
-	regs.pc = 0x00;
-	regs.af = 0x6000;
-	regs.sp = 0x00;
 }
 
 GBZ80::~GBZ80() { }
@@ -62,6 +59,7 @@ void GBZ80::executeInstruction(BYTE opCode, std::vector<BYTE> instr) {
 		case LD_SP_HL: ldSPHL(); return;
 		case DI: di(); return;
 		case EI: ei(); return;
+		case PREFIX: prefix(instr); return;
 		default: break;
 	}
 
@@ -109,6 +107,35 @@ void GBZ80::executeInstruction(BYTE opCode, std::vector<BYTE> instr) {
 
 	if (opCode & ~(BITS_012 | BITS_345))
 		loadR8R8(r8, r8_low);
+}
+
+void GBZ80::prefix(std::vector<BYTE> instr) {
+	BYTE opCode = instr[0];
+	BYTE b3 = (opCode & BITS_345) >> 3;
+	BYTE R8 = opCode & BITS_012;
+
+	switch (opCode & (~BITS_012))
+	{
+	case RLC_R8: rlcR8(R8); return;
+	case RRC_R8: rrcR8(R8); return;
+	case RL_R8: rlR8(R8); return;
+	case RR_R8: rrR8(R8); return;
+	case SLA_R8: slaR8(R8); return;
+	case SRA_R8: sraR8(R8); return;
+	case SWAP_R8: swapR8(R8); return;
+	case SRL_R8: srlR8(R8); return;
+	default:
+		break;
+	}
+
+	switch (opCode & ~(BITS_012 | BITS_345))
+	{
+	case BIT_B3_R8: bitB3R8(b3, R8); return;
+	case RES_B3_R8: resB3R8(b3, R8); return;
+	case SET_B3_R8: setB3R8(b3, R8); return;
+	default:
+		break;
+	}
 }
 
 void GBZ80::execute() {
@@ -655,4 +682,114 @@ void GBZ80::di() {
 
 void GBZ80::ei() {
 	ime = true;
+}
+
+// 0xCB prefix instructions
+
+void GBZ80::rlcR8(BYTE r8) {
+	BYTE* reg = getR8(r8);
+
+	BYTE msb = *reg >> 7;
+	*reg = (*reg << 1) | msb;
+	setCFlag(msb == 0x01);
+	setZFlag(*reg == 0);
+	setNFlag(false);
+	setHFlag(false);
+}
+
+void GBZ80::rrcR8(BYTE r8) {
+	BYTE* reg = getR8(r8);
+
+	BYTE lsb = *reg << 7;
+	setCFlag(*reg & 0x01);
+	*reg = (*reg >> 1) | lsb;
+	setZFlag(*reg == 0);
+	setNFlag(false);
+	setHFlag(false);
+}
+
+void GBZ80::rlR8(BYTE r8) {
+	BYTE* reg = getR8(r8);
+
+	BYTE carry = (regs.f & CARRY_FLAG) >> 4;
+	BYTE msb = *reg >> 7;
+	setCFlag(msb);
+	regs.a = (*reg << 1) | carry;
+	setZFlag(*reg == 0);
+	setNFlag(false);
+	setHFlag(false);
+}
+
+void GBZ80::rrR8(BYTE r8) {
+	BYTE* reg = getR8(r8);
+
+	BYTE carry = (regs.f & CARRY_FLAG) >> 4;
+	BYTE lsb = *reg & 0x01;
+	setCFlag(lsb);
+	*reg = (*reg >> 1) | (carry << 7);
+	setZFlag(*reg == 0);
+	setNFlag(false);
+	setHFlag(false);
+}
+
+void GBZ80::slaR8(BYTE r8) {
+	BYTE* reg = getR8(r8);
+
+	setCFlag(*reg >> 7);
+	*reg = *reg << 1;
+	setZFlag(*reg == 0);
+	setNFlag(false);
+	setHFlag(false);
+}
+
+void GBZ80::sraR8(BYTE r8) {
+	BYTE* reg = getR8(r8);
+
+	setCFlag(*reg & 0x01);
+	BYTE msb = *reg >> 7;
+	*reg = (*reg >> 1) | (msb << 7);
+	setZFlag(*reg == 0);
+	setNFlag(false);
+	setHFlag(false);
+
+}
+
+void GBZ80::swapR8(BYTE r8) {
+	BYTE* reg = getR8(r8);
+
+	*reg = (*reg >> 4) | LOWER_NIBBLE(*reg) << 4;
+	setZFlag(*reg == 0);
+	setNFlag(false);
+	setHFlag(false);
+	setCFlag(false);
+}
+
+void GBZ80::srlR8(BYTE r8) {
+	BYTE* reg = getR8(r8);
+
+	setCFlag(*reg & 0x01);
+	*reg = (*reg >> 1);
+	setZFlag(*reg == 0);
+	setNFlag(false);
+	setHFlag(false);
+}
+
+void GBZ80::bitB3R8(BYTE b3, BYTE r8) {
+	BYTE* reg = getR8(r8);
+
+	setZFlag((*reg & (1 << b3)) == 0);
+	setNFlag(false);
+	setHFlag(true);
+}
+
+void GBZ80::resB3R8(BYTE b3, BYTE r8) {
+	BYTE* reg = getR8(r8);
+
+	*reg = *reg & ~(1 << b3);
+}
+
+void GBZ80::setB3R8(BYTE b3, BYTE r8) {
+	BYTE* reg = getR8(r8);
+
+	*reg = *reg | (1 << b3);
 }

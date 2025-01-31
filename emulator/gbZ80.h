@@ -119,6 +119,8 @@ private:
     void popR16stk(BYTE r16stk);
     void pushR16stk(BYTE r16stk);
 
+    void prefix(std::vector<BYTE>);
+
     void ldhMemCA();
     void ldhPimm8A(std::vector<BYTE> instr);
     void ldPimm16A(std::vector<BYTE> instr);
@@ -156,6 +158,18 @@ private:
     void di();
     void ei();
 
+    void rlcR8(BYTE R8);
+    void rrcR8(BYTE R8);
+    void rlR8(BYTE R8);
+    void rrR8(BYTE R8);
+    void slaR8(BYTE R8);
+    void sraR8(BYTE R8);
+    void swapR8(BYTE R8);
+    void srlR8(BYTE R8);
+    void bitB3R8(BYTE B3, BYTE R8);
+    void resB3R8(BYTE B3, BYTE R8);
+    void setB3R8(BYTE B3, BYTE R8);
+
     // number of bytes per instruction excluding opcode
     std::vector<int> instLens = { 0, 2, 0, 0, 0, 0, 1, 0, 2, 0, 0, 0, 0, 0, 1, 0, // 0x00
                                   1, 2, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, // 0x10
@@ -169,7 +183,7 @@ private:
                                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 0x90
                                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 0xA0
                                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, // 0xB0
-                                  0, 0, 2, 2, 2, 0, 1, 0, 0, 0, 2, 0, 2, 2, 1, 0, // 0xC0
+                                  0, 0, 2, 2, 2, 0, 1, 0, 0, 0, 2, 1, 2, 2, 1, 0, // 0xC0
                                   0, 0, 2, 0, 2, 0, 1, 0, 0, 0, 2, 0, 2, 0, 1, 0, // 0xD0
                                   1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 2, 0, 0, 0, 1, 0, // 0xE0
                                   1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 2, 0, 0, 0, 1, 0 }; // 0xF0
