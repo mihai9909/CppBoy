@@ -23,3 +23,29 @@ void GameBoy::show(Cartridge* cartridge) {
 void GameBoy::closeEvent(QCloseEvent* event) {
     memory->flush();
 }
+
+void GameBoy::keyPressEvent(QKeyEvent* event) {
+    switch ((char)(event->key()))
+    {
+    case 'A': setJoypadReg(LEFT); return;
+    case 'S': setJoypadReg(DOWN); return;
+    case 'D': setJoypadReg(RIGHT); return;
+    case 'W': setJoypadReg(UP); return;
+    case 'P': setJoypadReg(SELECT); return;
+    case 'O': setJoypadReg(START); return;
+    case 'L': setJoypadReg(A); return;
+    case 'K': setJoypadReg(B); return;
+    default:
+        break;
+    }
+}
+
+void GameBoy::setJoypadReg(BYTE key) {
+    memory->setByte(JOYPAD, key);
+    requestInterrupt(JOYPAD_INT);
+}
+
+void GameBoy::requestInterrupt(BYTE interrupt) {
+    BYTE intFlag = memory->readByte(IF);
+    memory->setByte(IF, (intFlag | JOYPAD_INT));
+}

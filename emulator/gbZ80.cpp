@@ -144,7 +144,6 @@ void GBZ80::execute() {
 	executeInstruction(opCode, instruction);
 }
 
-
 BYTE* GBZ80::getR8(BYTE index) {
 	switch (index)
 	{

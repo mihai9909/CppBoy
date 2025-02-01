@@ -100,6 +100,7 @@
     <ClInclude Include="emulator\cartridge.h" />
     <ClInclude Include="emulator\gbZ80.h" />
     <ClInclude Include="emulator\memory.h" />
+    <ClInclude Include="emulator\memory_map.h" />
     <ClInclude Include="emulator\opcodes.h" />
     <ClInclude Include="utils\file_util.h" />
     <QtMoc Include="gui\romstable.h" />

@@ -1,5 +1,6 @@
 #include <QMainWindow>
 #include <QWidget>
+#include <QKeyEvent>
 #include "../emulator/PPU.h"
 #include "../emulator/cartridge.h"
 
@@ -16,8 +17,13 @@ public:
 
     void show(Cartridge* cartridge);
 
+private:
+    void requestInterrupt(BYTE interrupt);
+    void setJoypadReg(BYTE key);
+
 protected:
     void closeEvent(QCloseEvent* event);
+    void keyPressEvent(QKeyEvent* event);
 
 private:
     PPU* ppu;
