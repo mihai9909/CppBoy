@@ -32,7 +32,7 @@
 #define CCF 0x3F
 
 #define JR_IMM8 0x18
-#define JR_COND_IMM8 0x2
+#define JR_COND_IMM8 0x20
 
 #define STOP 0x10
 #define HALT 0x76 // LD [hl], [hl]

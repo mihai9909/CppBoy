@@ -713,7 +713,7 @@ void GBZ80::rlR8(BYTE r8) {
 	BYTE carry = (regs.f & CARRY_FLAG) >> 4;
 	BYTE msb = *reg >> 7;
 	setCFlag(msb);
-	regs.a = (*reg << 1) | carry;
+	*reg = (*reg << 1) | carry;
 	setZFlag(*reg == 0);
 	setNFlag(false);
 	setHFlag(false);
