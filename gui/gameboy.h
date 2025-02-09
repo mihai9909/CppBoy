@@ -1,32 +1,30 @@
+#pragma once
+
 #include <QMainWindow>
 #include <QWidget>
 #include <QKeyEvent>
-#include "../emulator/PPU.h"
-#include "../emulator/cartridge.h"
+#include "game_window.h"
+#include "../emulator/gameboy_core.h"
 
-#define WINDOW_HEIGHT_PX 720
-#define WINDOW_WIDTH_PX 800
+#define WINDOW_HEIGHT_PX 512
+#define WINDOW_WIDTH_PX 512
 
-class GameBoy : public QMainWindow
-{
+class GameBoy : public QMainWindow {
     Q_OBJECT
 
 public:
-    GameBoy(PPU* ppu, Memory* memory, QWidget* parent = nullptr);
+    GameBoy(GameBoyCore* core, QWidget* parent = nullptr);
     ~GameBoy();
 
-    void show(Cartridge* cartridge);
-
-private:
-    void requestInterrupt(BYTE interrupt);
-    void setJoypadReg(BYTE key);
+    void show();
 
 protected:
-    void closeEvent(QCloseEvent* event);
-    void keyPressEvent(QKeyEvent* event);
+    void closeEvent(QCloseEvent* event) override;
+    void keyPressEvent(QKeyEvent* event) override;
 
 private:
-    PPU* ppu;
-    Memory* memory;
-    Cartridge* cartridge;
+    void renderScreen(const std::vector<std::vector<WORD>>& frameBuffer);
+
+    GameBoyCore* core;
+    GameWindow* gameWindow;
 };

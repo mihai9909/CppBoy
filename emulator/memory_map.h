@@ -9,6 +9,18 @@
 #define BIT_6 (1 << 6)
 #define BIT_7 (1 << 7)
 
+#define VRAM_START 0x8000 // start address of VRAM
+#define VRAM_LEN 0x1800 // length of VRAM
+#define VRAM_END (VRAM_START + VRAM_LEN)
+#define BLOCK_0_START 0x8000
+#define BLOCK_1_START 0x8800
+#define BLOCK_2_START 0x9000
+#define TILE_MAP_LEN 0x400
+#define TILE_MAP_1_START 0x9800
+#define TILE_MAP_1_END (TILE_MAP_1_START + TILE_MAP_LEN)
+#define TILE_MAP_2_START 0x9C00
+#define TILE_MAP_2_END (TILE_MAP_2_START + TILE_MAP_LEN)
+
 /*** Registers ***/
 
 #define IE 0xFFFF
@@ -35,3 +47,5 @@
 /*** LCD Control ***/
 #define LCDC 0xFF40
 #define OBJ_ENABLE BIT_1
+#define BG_TILE_MAP BIT_3
+#define TILE_MAP_ADDRESSING BIT_4

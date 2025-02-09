@@ -58,6 +58,16 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
   </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <ShowIncludes>false</ShowIncludes>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <ShowIncludes>false</ShowIncludes>
+    </ClCompile>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
     <ClCompile>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
@@ -84,11 +94,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="emulator\cartridge.cpp" />
+    <ClCompile Include="emulator\gameboy_core.cpp" />
     <ClCompile Include="emulator\gbZ80.cpp" />
     <ClCompile Include="emulator\header_parser.cpp" />
     <ClCompile Include="emulator\memory.cpp" />
     <ClCompile Include="emulator\PPU.cpp" />
     <ClCompile Include="gui\gameboy.cpp" />
+    <ClCompile Include="gui\game_window.cpp" />
     <ClCompile Include="gui\romstable.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="utils\file_util.cpp" />
@@ -98,15 +110,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="emulator\cartridge.h" />
+    <ClInclude Include="emulator\gameboy_core.h" />
     <ClInclude Include="emulator\gbZ80.h" />
     <ClInclude Include="emulator\memory.h" />
     <ClInclude Include="emulator\memory_map.h" />
     <ClInclude Include="emulator\opcodes.h" />
+    <QtMoc Include="gui\game_window.h" />
     <ClInclude Include="utils\file_util.h" />
     <QtMoc Include="gui\romstable.h" />
     <ClInclude Include="emulator\header_parser.h" />
     <QtMoc Include="gui\gameboy.h" />
-    <QtMoc Include="emulator\PPU.h" />
+    <ClInclude Include="emulator\PPU.h" />
     <ClInclude Include="types.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

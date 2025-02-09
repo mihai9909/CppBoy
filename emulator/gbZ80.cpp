@@ -3,6 +3,7 @@
 GBZ80::GBZ80(Memory* memory) : mem(memory)
 {
 	regs = Regs();
+	regs.pc = 0x00;
 }
 
 GBZ80::~GBZ80() { }

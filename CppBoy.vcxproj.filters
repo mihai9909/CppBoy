@@ -50,6 +50,12 @@
     <ClCompile Include="emulator\cartridge.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="gui\game_window.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="emulator\gameboy_core.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="gui\romstable.ui">
@@ -81,6 +87,12 @@
     <ClInclude Include="emulator\memory_map.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="emulator\PPU.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="emulator\gameboy_core.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="gui\romstable.h">
@@ -89,7 +101,7 @@
     <QtMoc Include="gui\gameboy.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="emulator\PPU.h">
+    <QtMoc Include="gui\game_window.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

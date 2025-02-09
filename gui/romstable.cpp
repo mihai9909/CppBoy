@@ -1,7 +1,7 @@
 #include "romstable.h"
 
-ROMsTable::ROMsTable(HeaderParser* headerParser, GameBoy* gameBoy, QWidget *parent, QString romsDir)
-	: QMainWindow(parent), gameBoy(gameBoy), headerParser(headerParser)
+ROMsTable::ROMsTable(HeaderParser* headerParser, QWidget *parent, QString romsDir)
+	: QMainWindow(parent), headerParser(headerParser)
 {
 	ui.setupUi(this);
 
@@ -57,7 +57,16 @@ void ROMsTable::on_tableRow_doubleClicked(const QModelIndex& index)
     QString fileName = model->item(index.row(), 4)->text();
     Cartridge* cartridge = new Cartridge(fileName);
 
-    gameBoy->show(cartridge);
+    //start game
+    Memory* gameboyMem = new Memory();
+    PPU* gameboyPPU = new PPU(gameboyMem);
+    GBZ80* gameboyCPU = new GBZ80(gameboyMem);
+    core = new GameBoyCore(gameboyPPU, gameboyMem, gameboyCPU);
+
+    gameBoy = new GameBoy(core);
+    gameBoy->show();
+
+    core->run(cartridge);
 }
 
 void ROMsTable::addTableRow(QString filePath) {

@@ -3,8 +3,6 @@
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions>
 #include "gui/romstable.h"
-#include "emulator/ppu.h"
-#include "emulator/memory.h"
 
 int main(int argc, char *argv[])
 {
@@ -14,10 +12,7 @@ int main(int argc, char *argv[])
 
     QApplication app(argc, argv);
     HeaderParser headerParser;
-    Memory* gameboyMem = new Memory();
-    PPU* gameboyPPU = new PPU(gameboyMem);
-    GameBoy gameBoy(gameboyPPU, gameboyMem);
-    ROMsTable table(&headerParser, &gameBoy);
+    ROMsTable table(&headerParser);
 
     table.show();
 
